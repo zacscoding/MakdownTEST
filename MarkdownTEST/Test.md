@@ -101,7 +101,9 @@ public class Test {
 }
 </code>
 
-#수평선
+<hr />
+
+# 수평선
 <pre>
 &lt;hr /&gt;
 </pre>
