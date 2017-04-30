@@ -47,5 +47,19 @@ public class Test {
 <hr />
 
 
-
+#table
+<table>
+	<tr>
+		<th>제목</th>
+		<th>내용</th>		
+	</tr>
+	<tr>
+		<td>제목1</td>
+		<td>내용1</td>
+	</tr>
+	<tr>
+		<td>제목2</td>
+		<td>내용2</td>
+	</tr>
+</table>
 
