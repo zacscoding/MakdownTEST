@@ -111,7 +111,7 @@ public class Test {
 
 # table
 <pre>
-&lt;table&gt;
+&lt;table style=&quot;width:90%;&quot;&gt;
 	&lt;tr&gt;
 		&lt;th&gt;제목&lt;/th&gt;
 		&lt;th&gt;내용&lt;/th&gt;		
@@ -124,9 +124,12 @@ public class Test {
 		&lt;td&gt;제목2&lt;/td&gt;
 		&lt;td&gt;내용2&lt;/td&gt;
 	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td colspan=&quot;2&quot;&gt; 두칸 &lt;/td&gt;	
+	&lt;/tr&gt;	
 &lt;/table&gt;
 </pre>
-<table>
+<table style="width:90%;">
 	<tr>
 		<th>제목</th>
 		<th>내용</th>		
@@ -139,5 +142,8 @@ public class Test {
 		<td>제목2</td>
 		<td>내용2</td>
 	</tr>
+	<tr>
+		<td colspan="2"> 두칸 </td>	
+	</tr>	
 </table>
 
