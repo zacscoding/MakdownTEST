@@ -111,7 +111,7 @@ public class Test {
 
 # table
 <pre>
-&lt;table style=&quot;width:90%;&quot;&gt;
+&lt;table width=&quot;90%&quot;&gt;
 	&lt;tr&gt;
 		&lt;th&gt;제목&lt;/th&gt;
 		&lt;th&gt;내용&lt;/th&gt;		
@@ -129,7 +129,7 @@ public class Test {
 	&lt;/tr&gt;	
 &lt;/table&gt;
 </pre>
-<table style="width:90%;">
+<table width="90%">
 	<tr>
 		<th>제목</th>
 		<th>내용</th>		
