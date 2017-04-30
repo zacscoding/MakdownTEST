@@ -1,3 +1,4 @@
+# link
 <pre>
 [ref - link] : https://gist.github.com/ihoneymon/652be052a0727ad59601
 </pre>
@@ -5,6 +6,15 @@
 
 <hr />
 
+# image
+<pre>
+![Alt 테스트 이미지 ](./pic.png)
+</pre>
+![Alt 테스트 이미지 ](./pic.png)
+
+<hr />
+
+# header
 <pre>
 # This is a H1
 ## This is a H2
@@ -22,6 +32,7 @@
 
 <hr />
 
+# quotation
 <pre>
 > This is a blockqute.
 </pre>
@@ -29,6 +40,8 @@
 
 <hr />
 
+
+# UL | OL
 <pre>
 1. 첫번째
 2. 두번째
@@ -72,17 +85,17 @@
 - 빨강
 - 녹색
 - 파랑
-
 	
 <hr />
+
 # pre
 <pre>
 public class Test {
 }
 </pre>
+<hr />
 
-#code
-
+# code
 <code>
 public class Test {
 }
@@ -90,11 +103,9 @@ public class Test {
 
 #수평선
 <pre>
-<hr />
+&lt;hr /&gt;
 </pre>
 <hr />
-
-
 
 # table
 <pre>
