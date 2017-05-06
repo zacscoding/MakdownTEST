@@ -1,6 +1,6 @@
 <table>
 	<tr>
-		<th>설명</th> <th>URL</th> <th>METHOD</th>
+		<th>설명</th> <th>URI</th> <th>METHOD</th>
 	</tr>
 	<tr>
 		<th>게시글 작성 뷰</th>
