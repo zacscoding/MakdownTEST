@@ -33,8 +33,6 @@
 		<td> </td>
 	</tr>	
 </table>
-
-
 # 1.5 카탈로그 조직화 하기
 ; 디자인 패턴을 분류하여 관련된 패턴들을 하나의 군으로 묶는 것이 목표
 
@@ -50,11 +48,10 @@
  	
 <table>
 	<tr>
-		<th colspan="2">&nbsp;</th>
+		<td colspan="2" rowspan="2">&nbsp;</th>
 		<th colspan="3">목적</th>
 	</tr>
 	<tr>
-		<th colspan="2">&nbsp;</th>
 		<th>생성</th>
 		<th>구조</th>
 		<th>행동</th>
@@ -99,6 +96,7 @@
 </table> 	 
 
 2. 범위(scope) <br>
+
 
 
 
