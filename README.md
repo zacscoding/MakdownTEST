@@ -1,4 +1,22 @@
 # MakdownTEST
+
+# new line
+<pre>
+zaccoding`s Test
+new line1  
+new line2
+
+new line3
+</pre>
+
+zaccoding`s Test
+new line1    
+new line2
+
+new line3
+
+<hr />
+
 # link
 <pre>
 [ref - link] : https://gist.github.com/ihoneymon/652be052a0727ad59601
@@ -64,12 +82,12 @@
   * 녹색
     * 파랑
 
-	
+
 ----------------------------------------------------------
 <pre>
 + 빨강
   + 녹색
-    + 파랑	
+    + 파랑
 </pre>
 
 + 빨강
@@ -86,7 +104,7 @@
 - 빨강
 - 녹색
 - 파랑
-	
+
 <hr />
 
 # pre
@@ -97,18 +115,48 @@ public class Test {
 <hr />
 
 # code
+<pre>
+&lt;code&gt;
+public class Test {
+}
+&lt;/code&gt;
+</pre>
+
 <code>
 public class Test {
 }
 </code>
+
+<pre>
+```pyhone
+def func():
+print "Test"
+print "Zaccoding"
+```
+</pre>
+
+```pyhone
+def func():
+print "Test"
+print "Zaccoding"
+```
+
 
 <hr />
 
 # 수평선
 <pre>
 &lt;hr /&gt;
+---
+***
 </pre>
+
 <hr />
+
+---
+
+***
+
 
 # table
 <pre>
@@ -141,4 +189,3 @@ public class Test {
 		<td>내용2</td>
 	</tr>
 </table>
-
