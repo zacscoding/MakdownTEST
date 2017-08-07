@@ -65,15 +65,13 @@
 4. 압축 풀기  
 5. 메이븐 환경변수 설정
 - 윈도우  
-```
-M2_HOME=C:\\apache-maven-3.3.3  
+```M2_HOME=C:\apache-maven-3.3.3  
 M2=%M2_HOME%\\bin  
 MAVEN_OPTS=-Xms256m -Xmx512m
 ```
 
 - 리눅스  
-```
-export M2_HOME=/usr/local/apache-maven/apache-maven-3.3.3  
+```export M2_HOME=/usr/local/apache-maven/apache-maven-3.3.3  
 export M2=$M2_HOME/bin  
 export MAVEN_OPTS=-Xms256m -Xmx512m
 ```
