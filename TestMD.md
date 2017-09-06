@@ -1,9 +1,11 @@
 # Problems
 
-- <a href="#Assert.isTrue">spring-data-elasticsearch 3.0.0-SNAPSHOT error</a>
+- <a href="#prob1">spring-data-elasticsearch 3.0.0-SNAPSHOT error</a>
 
 
 
+<div id="prob1"></div>
+### spring-data-elasticsearch 3.0.0-SNAPSHOT error
 
 **문제**  
 
@@ -50,6 +52,5 @@ java.lang.NoSuchMethodError: org.springframework.util.Assert.isTrue(ZLjava/util/
 
 
 
-<div id="Assert.isTrue">
-### spring-data-elasticsearch 3.0.0-SNAPSHOT error
-</div>
+
+
