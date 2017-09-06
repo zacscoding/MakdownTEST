@@ -5,8 +5,6 @@
 
 
 
-### spring-data-elasticsearch 3.0.0-SNAPSHOT error
-
 **문제**  
 
 > ElasticsearchTemplate의 index() 메소드 호출 시,
@@ -52,46 +50,6 @@ java.lang.NoSuchMethodError: org.springframework.util.Assert.isTrue(ZLjava/util/
 
 
 
-<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p<br />p
-<br />p
-<br />p
-
-<br />p
-<br />p
-<br />p
-
-<div id="Assert.isTrue"></div>
+<div id="Assert.isTrue">
+### spring-data-elasticsearch 3.0.0-SNAPSHOT error
+</div>
