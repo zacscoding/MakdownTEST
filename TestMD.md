@@ -3,7 +3,7 @@
 - <a href="#Assert.isTrue">spring-data-elasticsearch 3.0.0-SNAPSHOT error</a>
 
 
-<div id="Assert.isTrue"></div>
+
 
 ### spring-data-elasticsearch 3.0.0-SNAPSHOT error
 
@@ -30,6 +30,68 @@ java.lang.NoSuchMethodError: org.springframework.util.Assert.isTrue(ZLjava/util/
 **해결**  
 
 
+
+
+
+
+
       
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p<br />p
+<br />p
+<br />p
+
+<br />p
+<br />p
+<br />p
+
+<div id="Assert.isTrue"></div>
