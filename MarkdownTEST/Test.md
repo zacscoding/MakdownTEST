@@ -9,6 +9,8 @@
 - <a href="#5">2.2.1 Presentation</a>
 - <a href="#6">2.2.2 Parsing classes</a>
 - <a href="#7">2.2.3 Generating Classes</a>
+- <a href="#8">2.2.4 Transforming classes</a>
+- <a href="#9">2.2.5 Removing class members</a>
 
 ## structure
 
@@ -430,19 +432,166 @@ public class GenerateClassRunner extends ClassLoader {
 
 > Result
 
-<pre>
-## [field] :: name : LESS , value : -1
+
+```\#\# [field] :: name : LESS , value : -1
 ## [field] :: name : EQUAL , value : 0
 ## [field] :: name : GREATER , value : 1
 ## [method] name : compareTo
-</pre>
+```
+
 
 ---
 
 ### 2.2.4 Transforming classes
+<div id="8"></div>
+
+> class reader로부터 파싱 된 클래스를 class writer가 reconstruct
+
+<pre>
+  byte[] b1 = ...;
+  ClassWriter cw = new ClassWriter(0);
+  ClassReader cr = new ClassReader(b1);
+  cr.accept(cw,0);
+  // b2 represents the same class as b1
+  byte[] b2 = cw.toByteArray();  
+</pre>  
+
+
+> ClassVisitor between ClassReader & ClassWriter  
+
+<pre>
+  byte[] b1 = ...;
+  ClassWriter cw = new ClassWriter(0);
+  // cv forwards all events to cw
+  ClassVisitor cv = new ClassVisitor(ASM4, cw){};
+  ClassReader cr = new ClassReader(b1);
+  cr.accept(cv,0);
+  // b2 represents the same class as b1
+  byte[] b2 = cw.toByteArray();  
+</pre>
+
+> A transformation chain
+
+![transformation chain](./pics/[pic2.6]transformation_chain.png)
+
+- 사각형 : components
+- 화살표 : events
+
+
+> ChangeVersionAdapter
+
+<pre>
+public class ChangeVersionAdapter extends ClassVisitor implements Opcodes {
+    public ChangeVersionAdapter(ClassVisitor cv) {
+        super(ASM5, cv);
+    }    
+    @Override
+    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+        cv.visit(V1_5, access, name, signature, superName, interfaces);        
+    }
+}
+</pre>
+
+> Sequence diagram for the ChangeVersionAdapter
+
+![Sequence diagram for the ChangeVersionAdapter](./pics/[pic2-7]sequence_diagram.png)
+
+- visit 메소드의 다른 args를 변경해서 원하는 클래스 변경이 가능!
+
+**Optimization**  
+
+--> 위의 코드는 원래 클래스보다 버전만 바꿈(4bytes)  
+--> BUT b1, b2 둘다 바이트 코드 생성
+--> 비효율적임  
+--> 바뀌지 않는 부분은 b1을 복사하는게 효율적  
+--> ASM은 자동적으로 아래와 같은 최적화를 이행
+- If a ClassReader component detects that a MethodVisitor returned by  
+the ClassVisitor passed as argument to its accept method comes from  
+a ClassWriter, ??  
+- i.e ClassReader 컴포넌트는 메소드의 content는 transform 되지 않고, events에 상응하는 것을  
+생성하지도 않고 단순히 ClassWriter 안의 위 메소드의 바이트 배열을 복사)
+
+> 서로 참조하면 위와같은 최적화가 진행
+
+<pre>
+byte[] b1 = ...
+ClassReader cr = new ClassReader(b1);
+ClassWriter cw = new ClassWriter(cr,0);
+ChangeVersionAdapter ca = new ChangeVersionAdapter(cw);
+cr.accept(ca, 0);
+byte[] b2 = cw.toByteArray();
+</pre>
+
+- 위와같은 최적화로 두배 이상빠름(ChangeVersionAdapter는 어떤 메소드도 변경하지 않으므로)
+- 일부 or 모든 메소드를 변경하는 경우에도 약 20% 성능 향상이 있음
+
+
+> Optimize test (_테스트 다시 해보기_)
+
+<pre>
+// first transform
+byte[] b1 = GenerateClass.generateComparableInterface();
+long time = -System.currentTimeMillis();
+ClassWriter cw = new ClassWriter(0);
+// cv forwards all events to cw
+ClassVisitor cv = new ChangeVersionAdapter(cw);
+ClassReader cr = new ClassReader(b1);
+cr.accept(cv, 0);
+byte[] b2 = cw.toByteArray();
+time += System.currentTimeMillis();
+// 6ms or 4836815ns
+CustomLogger.println("## [first transform] :: {} ms", time);
+
+// optimized transform
+byte[] b3 = GenerateClass.generateComparableInterface();
+time = -System.currentTimeMillis();
+ClassReader cr2 = new ClassReader(b3);
+ClassWriter cw2 = new ClassWriter(cr,0);
+ChangeVersionAdapter ca = new ChangeVersionAdapter(cw2);
+cr2.accept(ca, 0);
+byte[] b4 = cw.toByteArray();
+time += System.currentTimeMillis();
+// 0ms or 98549ns
+CustomLogger.println("## [optimized transform] :: {} ms", time);
+</pre>
 
 
 
+**Using transformed classes**  
+-> ClassLoader에 있는 변경 된 클래스는 오직 이 클래스 로더에 의해  
+로드되는 클래스들을 변경할 수 있다.  
+-> java.lang.instrument.ClassFileTransformer를 이용해 모든 클래스 변경
+
+
+> 모든 클래스 변경하기
+
+<pre>
+public static void premain(String agentArgs, Instrumentation inst) {
+  inst.addTransformer(new ClassFileTransformer() {
+      public byte[] transform(ClassLoader l, String name, Class c, ProtectionDomain d,
+                          byte[] b) throws IllegalClassFormatException {
+        ClassReader cr = new ClassReader(b);
+        ClassWriter cw = new ClassWriter(cr, 0);
+        ClassVisitor cv = new ChangeVersionAdapter(cw);
+        cr.accept(cv, 0);
+        return cw.toByteArray();
+      }
+  });
+}
+</pre>
+
+> java api 확인하기  
+
+- [java.lang.instrument api(java6)](https://docs.oracle.com/javase/6/docs/api/java/lang/instrument/package-summary.html)  
+- [java.lang.instrument api(java7)](https://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html)  
+- [java.lang.instrument api(java8)](https://docs.oracle.com/javase/8/docs/api/java/lang/instrument/package-summary.html)  
+
+---
+
+### 2.2.5 Removing class members
+<div id="9"></div>
+
+-> 위의 ChangeVersionAdapter의 메소드는 ClassVisitor 클래스의 다른 메소드에 적용 가능  
 
 
 
