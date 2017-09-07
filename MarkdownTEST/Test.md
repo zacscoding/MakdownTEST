@@ -11,11 +11,14 @@
 - <a href="#7">2.2.3 Generating Classes</a>
 - <a href="#8">2.2.4 Transforming classes</a>
 - <a href="#9">2.2.5 Removing class members</a>
+- <a href="#10">2.6.6 Adding class members</a>
 
 ## structure
 
-### 2.1.1 Overview
 <div id="1"></div>
+
+### 2.1.1 Overview
+
 
 > Overall structure of a compiled class (*means zero or more)
 
@@ -75,8 +78,10 @@
 
 ---
 
-### 2.1.2 Internal names
 <div id="2"></div>
+
+### 2.1.2 Internal names
+
 
 SuperClass or interfaces implemented by a class .. etc  
 => 위와 같은 타입은 컴파일 된 클래스에서 Internal names로 나타남  
@@ -85,8 +90,9 @@ String == java/lang/String (. -> /)
 
 ---
 
-### 2.1.3 Type descriptors
 <div id="3"></div>
+
+### 2.1.3 Type descriptors
 
 > Type descriptors of some Java types
 
@@ -148,10 +154,12 @@ String == java/lang/String (. -> /)
 
 ## 2.2 Interfaces and components
 
+<div id="5"></div>
+
 ### 2.2.1 Presentation
 ; ASM API를 통해 컴파일 된 클래스들을 변경 or 생성하는 것은 ClassVisitor에 기초를 두고 있음  
 
-<div id="5"></div>
+
 
 > ClassVisitor  
 
@@ -221,9 +229,9 @@ ClassWriter::toByteArray()를 통해, byte array output 생성
 
 ---
 
-### 2.2.2 Parsing classes
 <div id="6"></div>  
 
+### 2.2.2 Parsing classes
 
 **SampleCode**
 
@@ -317,9 +325,11 @@ java/lang/Runnable extends java/lang/Object {
 
 ---
 
+<div id="7"></div>
+
 ### 2.2.3 Generating Classes
 ;클래스를 생성하는데 유일한 컴포넌트 == ClassWriter  
-<div id="7"></div>
+
 
 > 생성 할 인터페이스
 
@@ -442,8 +452,9 @@ public class GenerateClassRunner extends ClassLoader {
 
 ---
 
-### 2.2.4 Transforming classes
 <div id="8"></div>
+
+### 2.2.4 Transforming classes
 
 > class reader로부터 파싱 된 클래스를 class writer가 reconstruct
 
@@ -588,10 +599,79 @@ public static void premain(String agentArgs, Instrumentation inst) {
 
 ---
 
-### 2.2.5 Removing class members
 <div id="9"></div>
 
+### 2.2.5 Removing class members
+
 -> 위의 ChangeVersionAdapter의 메소드는 ClassVisitor 클래스의 다른 메소드에 적용 가능  
+
+> e.g)
+
+<pre>
+visitField --> field의 name, modifiers를 변경함으로써 access or name을 변경 가능
+visitMethod --> method의 name, modifiers를 변경함으로써 access or name을 변경 가능
+</pre>
+
+-> 체인에서 변경이 이루어지는 다음 호출을 막을 수도 있음  
+i.e class의 요소를 삭제
+
+> removes outer & inner class , name of source file
+
+<pre>
+public class RemoveDebugAdapter extends ClassVisitor implements Opcodes {
+    public RemoveDebugAdapter(ClassVisitor cv) {
+        super(ASM5, cv);
+    }
+
+    @Override
+    public void visitSource(String source, String debug) {        
+    }
+
+    @Override
+    public void visitOuterClass(String owner, String name, String desc) {        
+    }
+
+    @Override
+    public void visitInnerClass(String name, String outerName, String innerName, int access) {        
+    }
+}
+</pre>
+
+-> 위의 Adapter는 메소드나 필드에는 적용X(result를 리턴해야 하므로)  
+-> 메소드나 필드를 삭제하기 위해서는, 이어지는 method 호출을 막고 caller에게 null 반환
+
+> e.g) RemoveMethod
+
+<pre>
+public class RemoveMethodAdapter extends ClassVisitor implements Opcodes {
+    private String mName;
+    private String mDesc;  
+
+    public RemoveMethodAdapter(ClassVisitor cv, String mName, String mDesc) {
+        super(ASM5, cv);
+        this.mName = mName;
+        this.mDesc = mDesc;
+    }
+
+    @Override
+    public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+        if(name.equals(mName) && desc.equals(mDesc)) {
+            // do not delete to next visitor
+            return null;
+        }
+
+        return cv.visitMethod(access, name, desc, signature, exceptions);
+    }
+}
+</pre>
+
+---
+
+<div id="10"></div>
+
+### 2.6.6 Adding class members
+
+
 
 
 
