@@ -316,11 +316,131 @@ java/lang/Runnable extends java/lang/Object {
 ---
 
 ### 2.2.3 Generating Classes
+;클래스를 생성하는데 유일한 컴포넌트 == ClassWriter  
 <div id="7"></div>
 
+> 생성 할 인터페이스
 
+<pre>
+package pkg;
+public interface Comparable extends Mesurable {
+  int LESS = -1;
+  int EQUAL = 0;
+  int GREATER = 1;
+  int compareTo(Object o);
+}
+</pre>
+
+> javap
+
+<pre>
+public interface pkg.Comparable extends pkg.Mesurable {
+  public static final int LESS;
+
+  public static final int EQUAL;
+
+  public static final int GREATER;
+
+  public abstract int compareTo(java.lang.Object);
+}
+</pre>
+
+> Generate
+
+<pre>
+ClassWriter cw = new ClassWriter(0);
+
+// cw.visit(version, access, name, signature, superName, interfaces);
+cw.visit(V1_5, ACC_PUBLIC + ACC_ABSTRACT + ACC_INTERFACE, "pkg/Comparable", null, "java/lang/Object", new String[]{"pkg/Mesurable"});
+
+// cw.visitField(access, name, desc, signature, value)
+// annotatoin이 없으므로, visitEnd() 호출
+cw.visitField(ACC_PUBLIC + ACC_FINAL + ACC_STATIC, "LESS", "I", null, new Integer(-1)).visitEnd();
+cw.visitField(ACC_PUBLIC + ACC_FINAL + ACC_STATIC, "EQUAL", "I", null, new Integer(0)).visitEnd();
+cw.visitField(ACC_PUBLIC + ACC_FINAL + ACC_STATIC, "GREATER", "I", null, new Integer(1)).visitEnd();
+
+// cw.visitMethod(access, name, desc, signature, exceptions)
+cw.visitMethod(ACC_PUBLIC + ACC_ABSTRACT, "compareTo", "(Ljava/lang/Object;)I", null, null).visitEnd();
+cw.visitEnd();
+byte[] b = cw.toByteArray();
+</pre>
+
+> Runner
+
+<pre>
+
+</pre>
+
+> cw.visit(version, access, name, signature, superName, interfaces);
+
+- version(V1_5) : 자바 버전
+- access(ACC_XXX) : Java modifiers에 대응하는 상수 플래그  
+(2진수 논리곱 비트연산으로 체크 함)
+- name : internal form  (컴파일 된 클래스는 패키지를  
+import 하지 않으므로, 풀네임 필요)
+- signature : generics(section4.1)
+- superclass : internal form\
+- interfaces : 구현 인터페이스들
+
+> cw.visitField(access, name, desc, signature, value)  
+
+- access : Java modifiers
+- name : 필드 이름
+- desc : 필드 타입 in type descriptor form
+- signature : generics
+- value : Constant value
+
+> cw.visitMethod(access, name, desc, signature, exceptions)
+
+- access : Java modifiers에 상응하는 flags
+- name : 메소드 이름
+- desc : descriptor of the method
+- signature : generics
+- exceptions : throws exceptions
+
+=> MethodVisitor를 반환해서, annotations, attributes, methods code를 정의하는데 사용 할 수 있음  
+=> visitEnd()를 통해, cw에게 종료됬다고 알림  
+
+
+**Using generated classed**  
+
+> Runner  
+
+<pre>
+public class GenerateClassRunner extends ClassLoader {    
+    public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException {
+        byte[] bytes = GenerateClass.generateComparableInterface();
+        Class<?> comparableClazz = new GenerateClassRunner().defineClass("com.asm_sample.document.ch2.Comparable", bytes);
+        Field[] fields = comparableClazz.getFields();
+
+        for(Field field : fields) {
+            CustomLogger.println("## [field] :: name : {} , value : {}", new Object[]{field.getName(), field.get(null)});
+        }
+
+        Method[] methods = comparableClazz.getDeclaredMethods();
+        for(Method method : methods) {
+            CustomLogger.println("## [method] :: name : {}",new Object[]{method.getName()});
+        }
+    }    
+    public Class defineClass(String name, byte[] b) {
+        return defineClass(name, b, 0, b.length);
+    }    
+}
+</pre>
+
+> Result
+
+<pre>
+## [field] :: name : LESS , value : -1
+## [field] :: name : EQUAL , value : 0
+## [field] :: name : GREATER , value : 1
+## [method] name : compareTo
+</pre>
 
 ---
+
+### 2.2.4 Transforming classes
+
 
 
 
