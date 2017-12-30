@@ -1,6 +1,6 @@
 <button id="testBtn">TEST</button>
-<script>
+<script\>
   $('#testBtn').on('click', function(e){
     alert('test');
   });
-</script>
+</script\>
