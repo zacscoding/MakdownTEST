@@ -19,6 +19,7 @@
 		
 		<td>ㅇㅇ</td>
 		
-		<td></td>
+		<td>ㅇㅇ</td>
+		<td>ㅇㅇ</td>
 	</tr>
 </table>
