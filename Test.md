@@ -11,15 +11,11 @@
 		<th>컬럼 설명</th>
 	</tr>	
 	<tr>		
-		<td>ㅇㅇ</td>
-		
-		<td>ㅇㅇ</td>
-		
-		<td>ㅇㅇ</td>
-		
-		<td>ㅇㅇ</td>
-		
-		<td>ㅇㅇ</td>
-		<td>ㅇㅇ</td>
+		<td></td>		
+		<td></td>		
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
 	</tr>
 </table>
