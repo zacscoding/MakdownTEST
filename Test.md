@@ -1,4 +1,4 @@
-> Spring AMQP`s rabbit namespace includes sevral elts for lazily creating queues,  
+> Spring AMQP's rabbit namespace includes sevral elts for lazily creating queues,  
 exchanges, and the bindings between them  
 
 <table>
@@ -6,9 +6,7 @@ exchanges, and the bindings between them
     <th>Element</th><th>What is dows</th>
   </tr>
   <tr>
-    <td>
-    ```<queue>```  
-    </td>
+    <td><pre><queue></pre></td>
     <td>Creates a queue</td>
   </tr>
   <tr>
