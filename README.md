@@ -199,6 +199,6 @@ print "Zaccoding"
 ```  
 
 
-- [] Task1
+- [ ] Task1
 - [x] Task2
-- [] Task3
+- [ ] Task3
